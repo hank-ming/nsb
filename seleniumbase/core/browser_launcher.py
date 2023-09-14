@@ -1561,30 +1561,30 @@ def get_remote_driver(
             address += "/wd/hub"
     downloads_path = DOWNLOADS_FOLDER
     desired_caps = {}
-    extra_caps = {}
+    # extra_caps = {}
     if cap_file:
         from seleniumbase.core import capabilities_parser
 
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
     if cap_string:
-        import json
+        # import json
 
-        try:
-            extra_caps = json.loads(str(cap_string))
-        except Exception as e:
-            p1 = "Invalid input format for --cap-string:\n  %s" % e
-            p2 = "The --cap-string input was: %s" % cap_string
-            p3 = (
-                "Enclose cap-string in SINGLE quotes; "
-                "keys and values in DOUBLE quotes."
-            )
-            p4 = (
-                """Here's an example of correct cap-string usage:\n  """
-                """--cap-string='{"browserName":"chrome","name":"test1"}'"""
-            )
-            raise Exception("%s\n%s\n%s\n%s" % (p1, p2, p3, p4))
-        for cap_key in extra_caps.keys():
-            desired_caps[cap_key] = extra_caps[cap_key]
+        # try:
+        #     extra_caps = json.loads(str(cap_string))
+        # except Exception as e:
+        #     p1 = "Invalid input format for --cap-string:\n  %s" % e
+        #     p2 = "The --cap-string input was: %s" % cap_string
+        #     p3 = (
+        #         "Enclose cap-string in SINGLE quotes; "
+        #         "keys and values in DOUBLE quotes."
+        #     )
+        #     p4 = (
+        #         """Here's an example of correct cap-string usage:\n  """
+        #         """--cap-string='{"browserName":"chrome","name":"test1"}'"""
+        #     )
+        #     raise Exception("%s\n%s\n%s\n%s" % (p1, p2, p3, p4))
+        for cap_key in cap_string.keys():
+            desired_caps[cap_key] = cap_string[cap_key]
     if cap_file or cap_string:
         if "name" in desired_caps.keys():
             if desired_caps["name"] == "*":
@@ -1859,6 +1859,7 @@ def get_remote_driver(
         remote_options = ArgOptions()
         for cap_name, cap_value in desired_caps.items():
             remote_options.set_capability(cap_name, cap_value)
+            address = 'https://esporttech_pAs5Lg:qZ9qaMtPi5hqYxtqU1vE@hub.browserstack.com/wd/hub'
         driver = webdriver.Remote(
             command_executor=address,
             options=remote_options,
