@@ -1567,7 +1567,41 @@ def get_remote_driver(
 
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
     if cap_string:
-        # import json
+        import json
+        project_name = "load_config_fail"
+
+        if "krain" in cap_string:
+            # print("this is krain config")
+            project_name = "krain"
+            f = open("config/krain.json", "r")
+            all_caps = f.read()
+            f.close()
+            all_config = json.loads(all_caps)
+            config_name = re.search(r":(.+)", cap_string).group(1)
+            load_config = all_config[config_name]
+            # print(load_config)
+
+        if "esp" in cap_string:
+            # print("this is esp config")
+            project_name = "esp"
+            f = open("config/esp.json", "r")
+            all_caps = f.read()
+            f.close()
+            all_config = json.loads(all_caps)
+            config_name = re.search(r":(.+)", cap_string).group(1)
+            load_config = all_config[config_name]
+            test_time = "[ESP]"
+            # print(load_config)
+
+        t = time.localtime()
+        test_time = time.strftime("%Y-%m-%d, %H:%M", t)
+        bs_info = {
+            "projectName": project_name,
+            "buildName": "[KRAIN] " + test_time,
+            "sessionName": test_id
+        }
+        load_config.update(bs_info)
+        # print(bs_info)
 
         # try:
         #     extra_caps = json.loads(str(cap_string))
@@ -1583,8 +1617,9 @@ def get_remote_driver(
         #         """--cap-string='{"browserName":"chrome","name":"test1"}'"""
         #     )
         #     raise Exception("%s\n%s\n%s\n%s" % (p1, p2, p3, p4))
-        for cap_key in cap_string.keys():
-            desired_caps[cap_key] = cap_string[cap_key]
+
+        for cap_key in load_config.keys():
+            desired_caps[cap_key] = load_config[cap_key]
     if cap_file or cap_string:
         if "name" in desired_caps.keys():
             if desired_caps["name"] == "*":

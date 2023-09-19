@@ -163,6 +163,12 @@ def set_settings(settings_file):
             settings.OBFUSCATION_START_TOKEN = override_settings[key]
         elif key == "OBFUSCATION_END_TOKEN":
             settings.OBFUSCATION_END_TOKEN = override_settings[key]
+        elif key == "LOGIN_URL":
+            settings.LOGIN_URL = override_settings[key]
+        elif key == "GENERAL_PASSWD":
+            settings.GENERAL_PASSWD = override_settings[key]
+        elif key == "UI_CHECK_USER":
+            settings.UI_CHECK_USER = override_settings[key]
         else:
             continue
 

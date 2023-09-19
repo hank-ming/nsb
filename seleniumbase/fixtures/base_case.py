@@ -3725,22 +3725,12 @@ class BaseCase(unittest.TestCase):
             "https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/"
         )
 
-        # 增加servername＝browserstack的判斷, 在此處即載入desired_caps
+        # 可在此處新增檢查, 若沒有帶入cap_string, 則在此處強制載入desired_caps (記得修改browser_launcher的部分)
         if self.browser == "remote" and self.servername == "browserstack":
-            if self.var1 == "basic_mobile":
-                t = time.localtime()
-                testTime = time.strftime("%Y-%m-%d, %H:%M", t)
-                self.cap_string = {
-                    "browserVersion": "16",
-                    "deviceName": "iPhone 14",
-                    "local": "false",
-                    "projectName": "KRAIN",
-                    "buildName": testTime,
-                    "sessionName": self._testMethodName,
-                    "debug": "true",
-                    "networkLogs": "true",
-                    "consoleLogs": "info"
-                }
+            pass
+            # self.test_id = {
+            #     "sessionName": self._testMethodName,
+            # }
 
         if self.browser == "remote" and not (self.cap_file or self.cap_string):
             raise Exception(
